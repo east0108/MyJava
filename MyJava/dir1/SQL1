@@ -1,0 +1,56 @@
+SELECT CustomerID , COUNT(*) nmber FROM orders 
+GROUP by CustomerID
+HAVING nmber >=10
+ORDER by nmber DESC
+
+
+SELECT
+FROM
+WHERE
+GROUP by
+HAVING
+ORDER BY
+LIMIT
+
+2.Seafood的商品有哪些
+SELECT  `ProductName`  FROM `products` WHERE `CategoryID` = 
+(SELECT CategoryID FROM  categories WHERE categoryName = 'Seafood')
+
+3.Seafood的商品供應商有哪些
+
+SELECT CompanyName FROM suppliers 
+WHERE SupplierID in 
+(
+    SELECT SupplierID FROM products 
+    WHERE CategoryID =
+    ( 
+        SELECT CategoryID FROM  categories 
+        WHERE categoryName = 'Seafood'
+    )
+)
+4.查詢特定公司提供的商品
+select productname, p.supplierid, s.companyname from products p
+join suppliers s on (s.supplierid = p.supplierid)
+where p.supplierid in (
+	select supplierid from suppliers
+	where companyname in (
+		'Exotic Liquids', 'Tokyo Traders'
+	)
+)
+
+5. 銷售業績(營業額)排行榜
+orderdetail => product, unit, qty -> order orderid -> employee
+select e.lastname, sum(od.unitprice * od.quantity) sum from orders o
+join employees e on (o.employeeid = e.employeeid)
+join orderdetails od on (o.orderid = od.orderid)
+group by e.employeeid
+order by sum desc
+
+驗算
+select sum(unitprice * quantity) sum from orderdetails
+where orderid in 
+(select orderid from orders where employeeid = 4)
+
+
+
+6.
